@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 protocol HomeViewModelCoordinatorDelegate: AnyObject {}
 
 protocol HomeViewModelToControllerDelegate: AnyObject {}
@@ -18,4 +19,9 @@ protocol HomeViewModelType {
 class HomeViewModel: HomeViewModelType {
   public weak var coordinatorDelegate: HomeViewModelCoordinatorDelegate?
   public weak var viewModelToControllerDelegate: HomeViewModelToControllerDelegate?
+  typealias Dependency = ContactUseCaseInjectable
+  let contactUseCase: ContactUseCase
+  init(depedency: Dependency) {
+    self.contactUseCase = depedency.contactUseCase
+  }
 }

@@ -7,13 +7,21 @@
 
 import Foundation
 /// Top level dependency container for the entire application.
-/// It creates and holds the concrete instances of the dependencies and inject them into
-/// their consumers as protocols.
 final class AppDependency: AllInjectables {
   // MARK: Singletons
 
   lazy var networkConnectivity: Connectivity = { NetworkConnectivity.shared }()
   lazy var viewControllerProvider: ViewControllerProvider = { ViewControllerFactory(dependency: self) }()
+  lazy var coreDataStore: CoreDataStorage = { CoreDataStorage() }()
+  lazy var networkManager: NetworkManager = { NetworkManager() }()
+  lazy var contactRepository: ContactRepository = { ContactRepositoryProvider(depedency: self) }()
+  lazy var contactUseCase: ContactUseCase = { ContactUseCase(depedency: self) }()
+  lazy var contactLocalDataSource: ContactLocalDataSource = { ContactLocalDataSource(dependency: self) }()
+  lazy var contactRemoteDataSource: ContactRemoteDataSource = { ContactRemoteDataSource() }()
 
   // MARK: Factories
+
+  var homeViewModel: HomeViewModelType {
+    HomeViewModel(depedency: self)
+  }
 }
