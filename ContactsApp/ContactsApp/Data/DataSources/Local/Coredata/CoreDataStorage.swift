@@ -16,7 +16,10 @@ class CoreDataStorage: NSObject {
   // MARK: - Core Data stack
 
   lazy var persistentContainer: NSPersistentContainer = {
-    let container = NSPersistentContainer(name: "ContactsApp")
+    var modelURL = Bundle(for: type(of: self)).url(forResource: "ContactsApp", withExtension: "momd")!
+    modelURL.appendPathComponent("ContactsApp.mom")
+    let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
+    let container = NSPersistentContainer(name: "ContactsApp", managedObjectModel: managedObjectModel!)
     container.loadPersistentStores(completionHandler: { _, error in
       if let error = error as NSError? {
         fatalError("Unresolved error \(error), \(error.userInfo)")
