@@ -35,7 +35,8 @@ extension ContactModel: Codable {
     self.lastName = try newsContainer.decode(String.self, forKey: .lastName)
     self.email = try newsContainer.decode(String.self, forKey: .email)
     self.isFavourite = try newsContainer.decode(Bool.self, forKey: .isFavourite)
-    self.mobileNumber = try newsContainer.decode(Int.self, forKey: .mobileNumber)
+    let strMobile = try newsContainer.decode(String.self, forKey: .mobileNumber)
+    self.mobileNumber = Int(strMobile) ?? 0
     self.avatarUrl = try newsContainer.decode(String.self, forKey: .avatarUrl)
   }
 }

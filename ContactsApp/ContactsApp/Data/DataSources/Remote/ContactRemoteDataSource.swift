@@ -26,6 +26,6 @@ class ContactRemoteDataSource {
       case .failure(let error):
         completion(.failure(error))
       }
-    }
+    }?.resume()
   }
 }

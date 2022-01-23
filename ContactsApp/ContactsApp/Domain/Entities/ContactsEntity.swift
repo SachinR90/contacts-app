@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct ContactsEntity {
+struct ContactsEntity: Equatable {
   var id: String = ""
   var firstName: String = ""
   var lastName: String = ""
@@ -14,6 +14,10 @@ struct ContactsEntity {
   var isFavourite: Bool = false
   var mobileNumber: Int = 0
   var avatarUrl: String = ""
+
+  var fullName: String {
+    "\(firstName.capitalized) \(lastName.capitalized)".trimmingCharacters(in: .whitespacesAndNewlines)
+  }
 }
 
 extension ContactsEntity {

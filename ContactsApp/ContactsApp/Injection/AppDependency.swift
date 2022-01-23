@@ -17,7 +17,7 @@ final class AppDependency: AllInjectables {
   lazy var contactRepository: ContactRepository = { ContactRepositoryProvider(depedency: self) }()
   lazy var contactUseCase: ContactUseCase = { ContactUseCase(depedency: self) }()
   lazy var contactLocalDataSource: ContactLocalDataSource = { ContactLocalDataSource(dependency: self) }()
-  lazy var contactRemoteDataSource: ContactRemoteDataSource = { ContactRemoteDataSource() }()
+  lazy var contactRemoteDataSource: ContactRemoteDataSource = { ContactRemoteDataSource(dependency: self) }()
 
   // MARK: Factories
 

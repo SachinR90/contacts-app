@@ -7,6 +7,8 @@
 
 import Foundation
 protocol ContactRepository {
-  func fetchContacts(isLocal: Bool, completion: @escaping (Result<[ContactsEntity], Error>) -> Void)
+  func fetchLocalContacts(completion: @escaping (Result<[ContactsEntity], Error>) -> Void)
+  func fetchContactsFromRemote(completion: @escaping (Result<[ContactsEntity], Error>) -> Void)
   func addContact(entity: ContactsEntity)
+  func updateContact(entity:ContactsEntity)
 }

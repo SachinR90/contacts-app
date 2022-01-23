@@ -7,13 +7,31 @@
 
 import Foundation
 class ContactUseCase {
-  typealias Dependency = ContactRepositoryInjectable
+  typealias Dependency = ContactRepositoryInjectable & NetworkConnectivityInjectable
   private let contactRepository: ContactRepository
+  private let connectivity: Connectivity
   init(depedency: Dependency) {
     self.contactRepository = depedency.contactRepository
+    self.connectivity = depedency.networkConnectivity
   }
 
   func fetchContacts(isLocal: Bool = false, completion: @escaping (Result<[ContactsEntity], Error>) -> Void) {
-    contactRepository.fetchContacts(isLocal: isLocal, completion: completion)
+    if isLocal || connectivity.currentStatus.status == .notConnected {
+      contactRepository.fetchLocalContacts { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success(let data):
+          if data.isEmpty {
+            self.contactRepository.fetchContactsFromRemote(completion: completion)
+          } else {
+            completion(result)
+          }
+        case .failure:
+          self.contactRepository.fetchContactsFromRemote(completion: completion)
+        }
+      }
+    } else {
+      contactRepository.fetchContactsFromRemote(completion: completion)
+    }
   }
 }

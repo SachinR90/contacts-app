@@ -47,7 +47,7 @@ class HomeCoordinator: BaseCoordinator {
     var viewModel = dependency.homeViewModel
     viewModel.coordinatorDelegate = self
     viewModel.viewModelToControllerDelegate = homeViewController
-    homeViewController.homeViewModelType = viewModel
+    homeViewController.homeViewModel = viewModel
     self.homeViewController = homeViewController
   }
 }
