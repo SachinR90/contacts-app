@@ -12,3 +12,10 @@ import Foundation
 typealias AllInjectables =
   NetworkConnectivityInjectable
     & ViewControllerProviderInjectable
+    & CoreDataStoreInjectable
+    & NetworkManagerInjectable
+    & HomeViewModelInjectable
+    & ContactRepositoryInjectable
+    & ContactLocalDataSourceInjectable
+    & ContactRemoteDataSourceInjectable
+    & ContactUseCaseInjectable

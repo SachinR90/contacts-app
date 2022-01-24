@@ -12,10 +12,10 @@ protocol HomeCoordinatorDelegate: AnyObject {}
 
 extension HomeCoordinatorDelegate {}
 
-@objc class HomeCoordinator: BaseCoordinator {
+class HomeCoordinator: BaseCoordinator {
   // MARK: - Properties
 
-  typealias Dependency = ViewControllerProviderInjectable
+  typealias Dependency = ViewControllerProviderInjectable & HomeViewModelInjectable
   let navigationController: UINavigationController?
   weak var homeCoordinatorDelegate: HomeCoordinatorDelegate?
   private weak var homeViewController: HomeViewController?
@@ -30,7 +30,7 @@ extension HomeCoordinatorDelegate {}
     self.viewControllerProvider = dependency.viewControllerProvider
   }
 
-  @objc override func start() {
+  override func start() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self, let navigationController = self.navigationController else {
         return
@@ -42,12 +42,12 @@ extension HomeCoordinatorDelegate {}
     }
   }
 
-  private func makeLoginViewController() {
-    let homeViewController = self.viewControllerProvider.provideHomeViewController()
-    let viewModel = HomeViewModel()
+  private final func makeLoginViewController() {
+    let homeViewController = viewControllerProvider.provideHomeViewController()
+    var viewModel = dependency.homeViewModel
     viewModel.coordinatorDelegate = self
     viewModel.viewModelToControllerDelegate = homeViewController
-    homeViewController.homeViewModelType = viewModel
+    homeViewController.homeViewModel = viewModel
     self.homeViewController = homeViewController
   }
 }
