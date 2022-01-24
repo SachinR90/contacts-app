@@ -53,6 +53,10 @@ extension HomeViewController: HomeViewModelToControllerDelegate {
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    homeViewModel?.numberOfSections() ?? 0
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     homeViewModel?.numberOfRowsInSection(section: section) ?? 0
   }
@@ -81,11 +85,23 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     return config
   }
 
-  func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at _: Int) -> Int {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if let header = homeViewModel?.getSectionTitle(at: section) {
+      let label = UILabel()
+      label.text = header
+      label.textColor = .blue
+      return label
+    }
+    return nil
+  }
+
+  func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at section: Int) -> Int {
     guard let i = homeViewModel?.getIndex(for: title) else { return 0 }
-    let indexPath = IndexPath(row: i, section: 0)
-    tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-    return 1
+    DispatchQueue.main.async {
+      let indexPath = IndexPath(row: 0, section: i)
+      tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+    return i
   }
 
   func sectionIndexTitles(for _: UITableView) -> [String]? {

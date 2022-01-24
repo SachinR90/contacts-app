@@ -18,6 +18,7 @@ protocol HomeViewModelToControllerDelegate: AnyObject {
 protocol HomeViewModelType {
   var coordinatorDelegate: HomeViewModelCoordinatorDelegate? { get set }
   var viewModelToControllerDelegate: HomeViewModelToControllerDelegate? { get set }
+  func numberOfSections() -> Int
   func numberOfRowsInSection(section: Int) -> Int
   func getIndexTitles() -> [String]?
   func getIndex(for sectionIndexTitle: String) -> Int?
@@ -25,9 +26,27 @@ protocol HomeViewModelType {
   func getItem(at index: IndexPath) -> ContactsEntity?
   func toggleItemFavorite(at index: IndexPath)
   func getFavoriteTitle(at index: IndexPath) -> String
+  func getSectionTitle(at section: Int) -> String
+}
+
+private class SectionModel {
+  let header: String
+  let contacts: [ContactsEntity]
+  init(header: String, contacts: [ContactsEntity]) {
+    self.header = header
+    self.contacts = contacts
+  }
 }
 
 class HomeViewModel: HomeViewModelType {
+  func getSectionTitle(at section: Int) -> String {
+    contactSections[safeIndex: section]?.header ?? ""
+  }
+
+  func numberOfSections() -> Int {
+    contactSections.count
+  }
+
   init(depedency: Dependency) {
     self.contactUseCase = depedency.contactUseCase
   }
@@ -36,10 +55,7 @@ class HomeViewModel: HomeViewModelType {
 
   // MARK: - private variables
 
-  private var contacts: [ContactsEntity] = []
-  private var sectionIndexes: [String: [ContactsEntity]] {
-    Dictionary(grouping: contacts) { $0.firstName.first!.uppercased() }
-  }
+  private var contactSections: [SectionModel] = []
 
   // MARK: - public variables
 
@@ -50,7 +66,7 @@ class HomeViewModel: HomeViewModelType {
   // MARK: - Methods
 
   func getItem(at index: IndexPath) -> ContactsEntity? {
-    guard !contacts.isEmpty, let entity = contacts[safeIndex: index.row] else {
+    guard !contactSections.isEmpty, let entity = contactSections[safeIndex: index.section]?.contacts[safeIndex: index.row] else {
       return nil
     }
     return entity
@@ -61,7 +77,9 @@ class HomeViewModel: HomeViewModelType {
       guard let self = self else { return }
       switch result {
       case .success(let data):
-        self.contacts = data.sorted { $0.firstName.caseInsensitiveCompare($1.firstName) == .orderedAscending }
+        self.contactSections = Dictionary(grouping: data) { $0.firstName.first!.uppercased() }.map { element in
+          SectionModel(header: element.key, contacts: element.value.sorted { $0.firstName.caseInsensitiveCompare($1.firstName) == .orderedAscending })
+        }.sorted { $0.header.caseInsensitiveCompare($1.header) == .orderedAscending }
         self.viewModelToControllerDelegate?.refreshTable()
       case .failure(let error):
         print(error)
@@ -70,17 +88,15 @@ class HomeViewModel: HomeViewModelType {
   }
 
   func getIndex(for sectionIndexTitle: String) -> Int? {
-    sectionIndexes[sectionIndexTitle]?[safeIndex: 0].flatMap { contact in
-      contacts.firstIndex(of: contact)
-    }
+    contactSections.firstIndex { $0.header.caseInsensitiveCompare(sectionIndexTitle) == .orderedSame }
   }
 
-  func numberOfRowsInSection(section _: Int) -> Int {
-    contacts.count
+  func numberOfRowsInSection(section: Int) -> Int {
+    contactSections[safeIndex: section]?.contacts.count ?? 0
   }
 
   func getIndexTitles() -> [String]? {
-    Array(sectionIndexes.keys).sorted()
+    contactSections.map { $0.header }
   }
 
   func toggleItemFavorite(at index: IndexPath) {
@@ -90,7 +106,9 @@ class HomeViewModel: HomeViewModelType {
         guard let self = self else { return }
         switch result {
         case .success:
-          self.contacts[index.row].setFavorite(isFavorite: entity.isFavourite)
+          if var contacts = self.contactSections[safeIndex: index.section]?.contacts {
+            contacts[index.row].setFavorite(isFavorite: entity.isFavourite)
+          }
           self.viewModelToControllerDelegate?.refreshTable(at: index)
         case .failure:
           print("Something went wrong")
