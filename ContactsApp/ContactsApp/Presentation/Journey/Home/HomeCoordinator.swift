@@ -15,7 +15,7 @@ extension HomeCoordinatorDelegate {}
 class HomeCoordinator: BaseCoordinator {
   // MARK: - Properties
 
-  typealias Dependency = ViewControllerProviderInjectable & HomeViewModelInjectable
+  typealias Dependency = AllInjectables
   let navigationController: UINavigationController?
   weak var homeCoordinatorDelegate: HomeCoordinatorDelegate?
   private weak var homeViewController: HomeViewController?
@@ -35,16 +35,16 @@ class HomeCoordinator: BaseCoordinator {
       guard let self = self, let navigationController = self.navigationController else {
         return
       }
-      self.makeLoginViewController()
+      self.makeContactViewController()
       if let homeVC = self.homeViewController {
         navigationController.pushViewController(homeVC, animated: true)
       }
     }
   }
 
-  private final func makeLoginViewController() {
-    let homeViewController = viewControllerProvider.provideHomeViewController()
-    var viewModel = dependency.homeViewModel
+  private final func makeContactViewController() {
+    let homeViewController = self.viewControllerProvider.provideHomeViewController()
+    var viewModel = self.dependency.homeViewModel
     viewModel.coordinatorDelegate = self
     viewModel.viewModelToControllerDelegate = homeViewController
     homeViewController.homeViewModel = viewModel
@@ -52,4 +52,11 @@ class HomeCoordinator: BaseCoordinator {
   }
 }
 
-extension HomeCoordinator: HomeViewModelCoordinatorDelegate {}
+extension HomeCoordinator: HomeViewModelCoordinatorDelegate {
+  func showDetails(for entity: ContactsEntity) {
+    let editCoordinator = ContactDetailCoordinator(navigationController: self.navigationController, dependency: self.dependency)
+    editCoordinator.selectedContact = entity
+    self.addChildCoordinator(editCoordinator)
+    editCoordinator.start()
+  }
+}

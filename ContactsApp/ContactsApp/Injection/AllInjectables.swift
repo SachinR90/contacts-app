@@ -19,3 +19,4 @@ typealias AllInjectables =
     & ContactLocalDataSourceInjectable
     & ContactRemoteDataSourceInjectable
     & ContactUseCaseInjectable
+    & ContactDetailViewModelInjectable

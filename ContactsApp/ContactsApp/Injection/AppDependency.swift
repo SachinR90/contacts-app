@@ -11,7 +11,7 @@ final class AppDependency: AllInjectables {
   // MARK: Singletons
 
   lazy var networkConnectivity: Connectivity = { NetworkConnectivity.shared }()
-  lazy var viewControllerProvider: ViewControllerProvider = { ViewControllerFactory(dependency: self) }()
+  lazy var viewControllerProvider: ViewControllerProvider = { ViewControllerFactory() }()
   lazy var coreDataStore: CoreDataStorage = { CoreDataStorage() }()
   lazy var networkManager: NetworkManager = { NetworkManager() }()
   lazy var contactRepository: ContactRepository = { ContactRepositoryProvider(depedency: self) }()
@@ -23,5 +23,9 @@ final class AppDependency: AllInjectables {
 
   var homeViewModel: HomeViewModelType {
     HomeViewModel(depedency: self)
+  }
+
+  var contactDetailViewModel: ContactDetailViewModelType {
+    ContactDetailViewModel()
   }
 }
