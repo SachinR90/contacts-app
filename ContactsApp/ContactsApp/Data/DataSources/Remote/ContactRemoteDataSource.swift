@@ -14,7 +14,7 @@ class ContactRemoteDataSource {
   }
 
   func fetchContact(completion: @escaping (Result<[ContactModel], Error>) -> Void) {
-    networkManager.GET(url: APIConstants.baseURl + APIConstants.contacts) { response in
+    networkManager.getJsonData(url: APIConstants.baseURl + APIConstants.contacts) { response in
       switch response {
       case .success(let data):
         do {

@@ -34,4 +34,8 @@ class ContactUseCase {
       contactRepository.fetchContactsFromRemote(completion: completion)
     }
   }
+
+  func updateEntity(contact: ContactsEntity, completion: @escaping (Result<Bool, Error>) -> Void) {
+    contactRepository.updateContact(entity: contact, completion: completion)
+  }
 }

@@ -18,6 +18,14 @@ struct ContactsEntity: Equatable {
   var fullName: String {
     "\(firstName.capitalized) \(lastName.capitalized)".trimmingCharacters(in: .whitespacesAndNewlines)
   }
+
+  func getImageUrl() -> URL {
+    URL(string: avatarUrl) ?? URL(string: "")!
+  }
+
+  mutating func setFavorite(isFavorite: Bool) {
+    isFavourite = isFavorite
+  }
 }
 
 extension ContactsEntity {

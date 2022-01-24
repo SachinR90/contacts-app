@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUi()
+    showHUD(progressLabel: "Loading...")
     homeViewModel?.fetchContact()
   }
 
@@ -35,9 +36,16 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: HomeViewModelToControllerDelegate {
+  func refreshTable(at index: IndexPath) {
+    DispatchQueue.main.async { [weak self] in
+      self?.tableView.reloadRows(at: [index], with: .automatic)
+    }
+  }
+
   func showErrorMessage(message: String) {}
 
   func refreshTable() {
+    dismissHUD()
     DispatchQueue.main.async { [weak self] in
       self?.tableView.reloadData()
     }
@@ -62,13 +70,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let action = UIContextualAction(style: .normal, title: "Favourite") { [weak self] _, _, completionHandler in
+    let label = homeViewModel?.getFavoriteTitle(at: indexPath) ?? "Favorite"
+    let action = UIContextualAction(style: .normal, title: label) { [weak self] _, _, completionHandler in
       self?.handleMarkAsFavourite(at: indexPath)
       completionHandler(true)
     }
     action.backgroundColor = .systemBlue
     let config = UISwipeActionsConfiguration(actions: [action])
-    config.performsFirstActionWithFullSwipe = false
+    config.performsFirstActionWithFullSwipe = true
     return config
   }
 
@@ -84,6 +93,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   private func handleMarkAsFavourite(at index: IndexPath) {
-    tableView.reloadRows(at: [index], with: .automatic)
+    homeViewModel?.toggleItemFavorite(at: index)
   }
 }

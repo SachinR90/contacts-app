@@ -14,7 +14,7 @@ enum URLError: Error {
 
 class NetworkManager {
   @discardableResult
-  func GET(url: String, params: [String: String] = [:], complete: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTask? {
+  func getJsonData(url: String, params: [String: String] = [:], complete: @escaping (Result<Data, Error>) -> ()) -> URLSessionDataTask? {
     guard var components = URLComponents(string: url) else {
       print("Error: cannot create URLCompontents")
       return nil
