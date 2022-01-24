@@ -10,17 +10,17 @@ import UIKit
 
 protocol ViewControllerProvider {
   func provideHomeViewController() -> HomeViewController
+  func provideContactEditViewController() -> ContactEditViewController
 }
 
 struct ViewControllerFactory: ViewControllerProvider {
-  typealias Dependency = AllInjectables
-  private let dependency: Dependency
-  init(dependency: Dependency) {
-    self.dependency = dependency
-  }
-
   func provideHomeViewController() -> HomeViewController {
     let uiStoryBoard = UIStoryboard(name: "Main", bundle: nil)
     return uiStoryBoard.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+  }
+
+  func provideContactEditViewController() -> ContactEditViewController {
+    let uiStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+    return uiStoryBoard.instantiateViewController(withIdentifier: "ContactEditViewController") as! ContactEditViewController
   }
 }

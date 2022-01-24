@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactHeaderViewCell: UITableViewCell {
+class ContactHeaderViewCell: UITableViewHeaderFooterView {
   @IBOutlet var header: UILabel!
   override func prepareForReuse() {
     super.prepareForReuse()

@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
     tableView.register(UINib(nibName: "ContactCell", bundle: nil),
                        forCellReuseIdentifier: "ContactCell")
     tableView.register(UINib(nibName: "ContactHeaderViewCell", bundle: nil),
-                       forCellReuseIdentifier: "ContactHeaderViewCell")
+                       forHeaderFooterViewReuseIdentifier: "ContactHeaderViewCell")
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 72
     tableView.sectionHeaderHeight = UITableView.automaticDimension
@@ -93,7 +93,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    if let header = homeViewModel?.getSectionTitle(at: section), let headerCell = tableView.dequeueReusableCell(withIdentifier: "ContactHeaderViewCell") as? ContactHeaderViewCell {
+    if let header = homeViewModel?.getSectionTitle(at: section), let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContactHeaderViewCell") as? ContactHeaderViewCell {
       headerCell.setHeader(title: header)
       return headerCell
     }
@@ -107,6 +107,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
       tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     return i
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let model = homeViewModel, let entity = model.getItem(at: indexPath) {
+      homeViewModel?.showDetails(for: entity)
+    }
+    tableView.deselectRow(at: indexPath, animated: false)
   }
 
   func sectionIndexTitles(for _: UITableView) -> [String]? {

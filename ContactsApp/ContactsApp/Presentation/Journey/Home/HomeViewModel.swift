@@ -7,7 +7,9 @@
 
 import Foundation
 import UIKit
-protocol HomeViewModelCoordinatorDelegate: AnyObject {}
+protocol HomeViewModelCoordinatorDelegate: AnyObject {
+  func showDetails(for entity: ContactsEntity)
+}
 
 protocol HomeViewModelToControllerDelegate: AnyObject {
   func refreshTable()
@@ -27,11 +29,12 @@ protocol HomeViewModelType {
   func toggleItemFavorite(at index: IndexPath)
   func getFavoriteTitle(at index: IndexPath) -> String
   func getSectionTitle(at section: Int) -> String
+  func showDetails(for entity: ContactsEntity)
 }
 
 private class SectionModel {
-  let header: String
-  let contacts: [ContactsEntity]
+  var header: String
+  var contacts: [ContactsEntity]
   init(header: String, contacts: [ContactsEntity]) {
     self.header = header
     self.contacts = contacts
@@ -39,19 +42,11 @@ private class SectionModel {
 }
 
 class HomeViewModel: HomeViewModelType {
-  func getSectionTitle(at section: Int) -> String {
-    contactSections[safeIndex: section]?.header ?? ""
-  }
-
-  func numberOfSections() -> Int {
-    contactSections.count
-  }
+  typealias Dependency = ContactUseCaseInjectable
 
   init(depedency: Dependency) {
     self.contactUseCase = depedency.contactUseCase
   }
-
-  typealias Dependency = ContactUseCaseInjectable
 
   // MARK: - private variables
 
@@ -108,6 +103,7 @@ class HomeViewModel: HomeViewModelType {
         case .success:
           if var contacts = self.contactSections[safeIndex: index.section]?.contacts {
             contacts[index.row].setFavorite(isFavorite: entity.isFavourite)
+            self.contactSections[safeIndex: index.section]?.contacts = contacts
           }
           self.viewModelToControllerDelegate?.refreshTable(at: index)
         case .failure:
@@ -123,5 +119,17 @@ class HomeViewModel: HomeViewModelType {
     } else {
       return "Favorite"
     }
+  }
+
+  func showDetails(for entity: ContactsEntity) {
+    coordinatorDelegate?.showDetails(for: entity)
+  }
+
+  func getSectionTitle(at section: Int) -> String {
+    contactSections[safeIndex: section]?.header ?? ""
+  }
+
+  func numberOfSections() -> Int {
+    contactSections.count
   }
 }

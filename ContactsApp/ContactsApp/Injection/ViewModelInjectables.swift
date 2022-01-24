@@ -7,3 +7,4 @@
 
 import Foundation
 protocol HomeViewModelInjectable { var homeViewModel: HomeViewModelType { get } }
+protocol ContactDetailViewModelInjectable { var contactDetailViewModel: ContactDetailViewModelType { get } }
