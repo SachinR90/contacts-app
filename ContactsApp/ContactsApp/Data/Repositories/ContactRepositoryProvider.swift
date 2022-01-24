@@ -54,6 +54,11 @@ class ContactRepositoryProvider: ContactRepository {
     }
   }
 
-  func addContact(entity: ContactsEntity) {}
-  func updateContact(entity: ContactsEntity) {}
+  func addContact(entity: ContactsEntity, completion: @escaping (Result<Bool, Error>) -> Void) {
+    localDataSource.saveContact(contact: ContactModel(from: entity), completion: completion)
+  }
+
+  func updateContact(entity: ContactsEntity, completion: @escaping (Result<Bool, Error>) -> Void) {
+    localDataSource.updateContact(contact: ContactModel(from: entity), completion: completion)
+  }
 }

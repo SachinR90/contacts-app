@@ -11,6 +11,7 @@ protocol HomeViewModelCoordinatorDelegate: AnyObject {}
 
 protocol HomeViewModelToControllerDelegate: AnyObject {
   func refreshTable()
+  func refreshTable(at index: IndexPath)
   func showErrorMessage(message: String)
 }
 
@@ -22,6 +23,7 @@ protocol HomeViewModelType {
   func getIndex(for sectionIndexTitle: String) -> Int?
   func fetchContact()
   func getItem(at index: IndexPath) -> ContactsEntity?
+  func toggleItemFavorite(at index: IndexPath)
 }
 
 class HomeViewModel: HomeViewModelType {
@@ -78,5 +80,21 @@ class HomeViewModel: HomeViewModelType {
 
   func getIndexTitles() -> [String]? {
     Array(sectionIndexes.keys).sorted()
+  }
+
+  func toggleItemFavorite(at index: IndexPath) {
+    if var entity = getItem(at: index) {
+      entity.setFavorite(isFavorite: !entity.isFavourite)
+      contactUseCase.updateEntity(contact: entity) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
+        case .success:
+          self.contacts[index.row].setFavorite(isFavorite: entity.isFavourite)
+          self.viewModelToControllerDelegate?.refreshTable(at: index)
+        case .failure:
+          print("Something went wrong")
+        }
+      }
+    }
   }
 }

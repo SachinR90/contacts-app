@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import MBProgressHUD
+import UIKit
 public extension Array {
   subscript(safeIndex index: Int) -> Element? {
     guard index >= 0, index < endIndex else {
@@ -13,5 +15,20 @@ public extension Array {
     }
 
     return self[index]
+  }
+}
+
+public extension UIViewController {
+  func showHUD(progressLabel: String) {
+    DispatchQueue.main.async {
+      let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+      progressHUD.label.text = progressLabel
+    }
+  }
+
+  func dismissHUD() {
+    DispatchQueue.main.async {
+      MBProgressHUD.hide(for: self.view, animated: true)
+    }
   }
 }
