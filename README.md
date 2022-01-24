@@ -16,6 +16,12 @@ The App has following features:
  - Allow user to open message, email, sms depending on availablity of services in phone
  - Support for System Color mode changes automatically.
  - Favorite/Unfavorite in list screen via swipe action
+ - Uses Kingfisher for Image Loading.
+ - Uses MBProgressHUD for system loader.
  
 The following features are work in progress:
- - Add/Edit contact
+ - Add new contact
+ - Edit Contact
+    - pick image from system image picker
+    - validations in edit contact
+ - implement own Image Loading Library
