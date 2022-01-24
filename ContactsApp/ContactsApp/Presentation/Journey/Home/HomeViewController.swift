@@ -25,13 +25,20 @@ class HomeViewController: UIViewController {
     tableView.backgroundColor = .clear
     tableView.register(UINib(nibName: "ContactCell", bundle: nil),
                        forCellReuseIdentifier: "ContactCell")
+    tableView.register(UINib(nibName: "ContactHeaderViewCell", bundle: nil),
+                       forCellReuseIdentifier: "ContactHeaderViewCell")
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 72
+    tableView.sectionHeaderHeight = UITableView.automaticDimension
+    tableView.estimatedSectionHeaderHeight = 44
     tableView.dataSource = self
     tableView.delegate = self
     tableView.sectionIndexBackgroundColor = .clear
     tableView.sectionIndexColor = .cyan
     tableView.tableFooterView = UIView()
+    var frame = CGRect.zero
+    frame.size.height = .leastNormalMagnitude
+    tableView.tableHeaderView = UIView(frame: frame)
   }
 }
 
@@ -86,11 +93,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    if let header = homeViewModel?.getSectionTitle(at: section) {
-      let label = UILabel()
-      label.text = header
-      label.textColor = .blue
-      return label
+    if let header = homeViewModel?.getSectionTitle(at: section), let headerCell = tableView.dequeueReusableCell(withIdentifier: "ContactHeaderViewCell") as? ContactHeaderViewCell {
+      headerCell.setHeader(title: header)
+      return headerCell
     }
     return nil
   }

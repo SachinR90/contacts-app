@@ -29,6 +29,8 @@
 		4975E683279C238E009D02BC /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4975E681279C238E009D02BC /* ContactCell.swift */; };
 		4975E684279C238E009D02BC /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4975E682279C238E009D02BC /* ContactCell.xib */; };
 		4975E687279C3692009D02BC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4975E686279C3692009D02BC /* Extensions.swift */; };
+		49A50215279EC90D0057D92B /* ContactHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A50213279EC90D0057D92B /* ContactHeaderViewCell.swift */; };
+		49A50216279EC90D0057D92B /* ContactHeaderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49A50214279EC90D0057D92B /* ContactHeaderViewCell.xib */; };
 		49CDBDC02799158900F1D934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CDBDBF2799158900F1D934 /* AppDelegate.swift */; };
 		49CDBDC72799158900F1D934 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49CDBDC52799158900F1D934 /* Main.storyboard */; };
 		49CDBDCA2799158900F1D934 /* ContactsApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 49CDBDC82799158900F1D934 /* ContactsApp.xcdatamodeld */; };
@@ -93,6 +95,8 @@
 		4975E681279C238E009D02BC /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		4975E682279C238E009D02BC /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		4975E686279C3692009D02BC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		49A50213279EC90D0057D92B /* ContactHeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHeaderViewCell.swift; sourceTree = "<group>"; };
+		49A50214279EC90D0057D92B /* ContactHeaderViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactHeaderViewCell.xib; sourceTree = "<group>"; };
 		49CDBDBC2799158900F1D934 /* ContactsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49CDBDBF2799158900F1D934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49CDBDC62799158900F1D934 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -366,6 +370,8 @@
 			children = (
 				4975E681279C238E009D02BC /* ContactCell.swift */,
 				4975E682279C238E009D02BC /* ContactCell.xib */,
+				49A50213279EC90D0057D92B /* ContactHeaderViewCell.swift */,
+				49A50214279EC90D0057D92B /* ContactHeaderViewCell.xib */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -570,6 +576,7 @@
 			files = (
 				49CDBDCF2799158C00F1D934 /* LaunchScreen.storyboard in Resources */,
 				495852DA2799319E00ED15B8 /* Colors.xcassets in Resources */,
+				49A50216279EC90D0057D92B /* ContactHeaderViewCell.xib in Resources */,
 				49CDBDCC2799158C00F1D934 /* Images.xcassets in Resources */,
 				4975E684279C238E009D02BC /* ContactCell.xib in Resources */,
 				49CDBDC72799158900F1D934 /* Main.storyboard in Resources */,
@@ -704,6 +711,7 @@
 				49FD327327994E83003295D9 /* AppCoordinator.swift in Sources */,
 				4916939B279ABF2D000C3A59 /* DataSourceInjectables.swift in Sources */,
 				491693A1279AC053000C3A59 /* ViewModelInjectables.swift in Sources */,
+				49A50215279EC90D0057D92B /* ContactHeaderViewCell.swift in Sources */,
 				49FD327A27995CCF003295D9 /* ViewControllerFactory.swift in Sources */,
 				49169396279ABEAA000C3A59 /* UserContactLocalDataSource.swift in Sources */,
 				495852CF2799265B00ED15B8 /* NetworkManager.swift in Sources */,
